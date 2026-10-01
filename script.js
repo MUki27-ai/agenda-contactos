@@ -102,6 +102,9 @@ function crearTarjeta(contacto) {
   acciones.append(
     crearBoton("Ver", "secundario", function () {
       verDetalle(contacto.id);
+    }),
+    crearBoton("Eliminar", "peligro", function () {
+      eliminarContacto(contacto.id);
     })
   );
 
@@ -139,6 +142,27 @@ function verDetalle(id) {
 function cerrarDetalle() {
   contactoVisible = null;
   detalle.hidden = true;
+}
+
+// Elimina un contacto después de pedir confirmación
+function eliminarContacto(id) {
+  const contacto = contactos.find(function (c) {
+    return c.id === id;
+  });
+  if (!contacto) return;
+
+  if (!confirm("¿Eliminar a " + contacto.nombre + " de la agenda?")) return;
+
+  contactos = contactos.filter(function (c) {
+    return c.id !== id;
+  });
+
+  if (contactoVisible === id) {
+    cerrarDetalle();
+  }
+
+  mostrarContactos();
+  mostrarMensaje("Contacto eliminado: " + contacto.nombre + ".", "ok");
 }
 
 document.getElementById("cerrarDetalle").addEventListener("click", cerrarDetalle);
