@@ -14,6 +14,11 @@ const lista = document.getElementById("listaContactos");
 const vacio = document.getElementById("vacio");
 const contador = document.getElementById("contador");
 const detalle = document.getElementById("detalle");
+const formulario = document.getElementById("formContacto");
+const campoNombre = document.getElementById("nombre");
+const campoTelefono = document.getElementById("telefono");
+const campoCorreo = document.getElementById("correo");
+const mensaje = document.getElementById("mensaje");
 
 // Obtiene las iniciales de un nombre: "Ana Quispe" -> "AQ"
 function obtenerIniciales(nombre) {
@@ -25,6 +30,40 @@ function obtenerIniciales(nombre) {
       return parte[0].toUpperCase();
     })
     .join("");
+}
+
+// Expresiones regulares para validar los datos
+const PATRON_NOMBRE = /^[A-Za-zÁÉÍÓÚáéíóúÑñÜü ]{2,50}$/;
+const PATRON_TELEFONO = /^[0-9+\s-]{6,15}$/;
+const PATRON_CORREO = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+// Devuelve un texto de error, o "" si los datos son correctos
+function validarContacto(nombre, telefono, correo) {
+  if (nombre === "" || telefono === "" || correo === "") {
+    return "Completa nombre, teléfono y correo.";
+  }
+  if (!PATRON_NOMBRE.test(nombre)) {
+    return "El nombre solo puede tener letras y espacios (mínimo 2).";
+  }
+  if (!PATRON_TELEFONO.test(telefono)) {
+    return "El teléfono solo puede tener números, espacios, + o - (6 a 15 caracteres).";
+  }
+  if (!PATRON_CORREO.test(correo)) {
+    return "El correo no es válido. Ejemplo: ana@correo.com";
+  }
+  const repetido = contactos.some(function (c) {
+    return c.correo.toLowerCase() === correo.toLowerCase();
+  });
+  if (repetido) {
+    return "Ya existe un contacto con ese correo.";
+  }
+  return "";
+}
+
+// Muestra un mensaje de confirmación ("ok") o de validación ("error")
+function mostrarMensaje(texto, tipo) {
+  mensaje.textContent = texto;
+  mensaje.className = "mensaje " + tipo;
 }
 
 // Crea un botón con texto, clase y acción al hacer clic
@@ -103,5 +142,34 @@ function cerrarDetalle() {
 }
 
 document.getElementById("cerrarDetalle").addEventListener("click", cerrarDetalle);
+
+// Registrar un nuevo contacto al enviar el formulario
+formulario.addEventListener("submit", function (evento) {
+  evento.preventDefault(); // evita que la página se recargue
+
+  const nombre = campoNombre.value.trim();
+  const telefono = campoTelefono.value.trim();
+  const correo = campoCorreo.value.trim();
+
+  const error = validarContacto(nombre, telefono, correo);
+  if (error !== "") {
+    mostrarMensaje(error, "error");
+    return;
+  }
+
+  contactos.push({ id: Date.now(), nombre: nombre, telefono: telefono, correo: correo });
+  mostrarContactos();
+
+  formulario.reset();
+  campoNombre.focus();
+  mostrarMensaje("Contacto guardado: " + nombre + ".", "ok");
+});
+
+// Al volver a escribir, se borra el mensaje de error anterior
+formulario.addEventListener("input", function () {
+  if (mensaje.classList.contains("error")) {
+    mostrarMensaje("", "");
+  }
+});
 
 mostrarContactos();
