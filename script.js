@@ -1,10 +1,34 @@
 // Agenda de contactos
 // Cada contacto tiene: id, nombre, telefono y correo
 
-let contactos = [
+const CLAVE_ALMACEN = "agenda-contactos";
+
+// Contactos de ejemplo para la primera vez que se abre la agenda
+const CONTACTOS_EJEMPLO = [
   { id: 1, nombre: "Ana Quispe", telefono: "984 123 456", correo: "ana.quispe@correo.com" },
   { id: 2, nombre: "Luis Mamani", telefono: "951 654 321", correo: "luis.mamani@correo.com" },
 ];
+
+// Lee los contactos guardados en el navegador
+function cargarContactos() {
+  try {
+    const guardados = localStorage.getItem(CLAVE_ALMACEN);
+    return guardados ? JSON.parse(guardados) : CONTACTOS_EJEMPLO;
+  } catch (error) {
+    return CONTACTOS_EJEMPLO;
+  }
+}
+
+// Guarda los contactos para que no se pierdan al recargar la página
+function guardarContactos() {
+  try {
+    localStorage.setItem(CLAVE_ALMACEN, JSON.stringify(contactos));
+  } catch (error) {
+    // Si el navegador no permite guardar, la agenda sigue funcionando en memoria
+  }
+}
+
+let contactos = cargarContactos();
 
 // Id del contacto que se está mostrando en el detalle (null si ninguno)
 let contactoVisible = null;
@@ -157,6 +181,8 @@ function eliminarContacto(id) {
     return c.id !== id;
   });
 
+  guardarContactos();
+
   if (contactoVisible === id) {
     cerrarDetalle();
   }
@@ -182,6 +208,7 @@ formulario.addEventListener("submit", function (evento) {
   }
 
   contactos.push({ id: Date.now(), nombre: nombre, telefono: telefono, correo: correo });
+  guardarContactos();
   mostrarContactos();
 
   formulario.reset();
