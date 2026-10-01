@@ -6,10 +6,14 @@ let contactos = [
   { id: 2, nombre: "Luis Mamani", telefono: "951 654 321", correo: "luis.mamani@correo.com" },
 ];
 
+// Id del contacto que se está mostrando en el detalle (null si ninguno)
+let contactoVisible = null;
+
 // Referencias a elementos del DOM
 const lista = document.getElementById("listaContactos");
 const vacio = document.getElementById("vacio");
 const contador = document.getElementById("contador");
+const detalle = document.getElementById("detalle");
 
 // Obtiene las iniciales de un nombre: "Ana Quispe" -> "AQ"
 function obtenerIniciales(nombre) {
@@ -21,6 +25,16 @@ function obtenerIniciales(nombre) {
       return parte[0].toUpperCase();
     })
     .join("");
+}
+
+// Crea un botón con texto, clase y acción al hacer clic
+function crearBoton(texto, clase, accion) {
+  const boton = document.createElement("button");
+  boton.type = "button";
+  boton.className = clase;
+  boton.textContent = texto;
+  boton.addEventListener("click", accion);
+  return boton;
 }
 
 // Crea la tarjeta (li) de un contacto
@@ -43,7 +57,16 @@ function crearTarjeta(contacto) {
   telefono.textContent = contacto.telefono;
 
   datos.append(nombre, telefono);
-  tarjeta.append(avatar, datos);
+
+  const acciones = document.createElement("div");
+  acciones.className = "acciones";
+  acciones.append(
+    crearBoton("Ver", "secundario", function () {
+      verDetalle(contacto.id);
+    })
+  );
+
+  tarjeta.append(avatar, datos, acciones);
   return tarjeta;
 }
 
@@ -58,5 +81,27 @@ function mostrarContactos() {
   vacio.hidden = contactos.length > 0;
   contador.textContent = contactos.length === 1 ? "1 contacto" : contactos.length + " contactos";
 }
+
+// Muestra toda la información de un contacto
+function verDetalle(id) {
+  const contacto = contactos.find(function (c) {
+    return c.id === id;
+  });
+  if (!contacto) return;
+
+  document.getElementById("detalleNombre").textContent = contacto.nombre;
+  document.getElementById("detalleTelefono").textContent = contacto.telefono;
+  document.getElementById("detalleCorreo").textContent = contacto.correo;
+
+  contactoVisible = id;
+  detalle.hidden = false;
+}
+
+function cerrarDetalle() {
+  contactoVisible = null;
+  detalle.hidden = true;
+}
+
+document.getElementById("cerrarDetalle").addEventListener("click", cerrarDetalle);
 
 mostrarContactos();
