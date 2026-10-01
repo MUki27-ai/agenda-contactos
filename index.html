@@ -13,7 +13,23 @@
     </header>
 
     <main class="contenido">
-      <!-- Aquí irán el formulario, la lista y el detalle de contactos -->
+      <section class="panel panel-lista" aria-labelledby="tituloLista">
+        <h2 id="tituloLista">Mis contactos</h2>
+        <ul id="listaContactos" class="lista"></ul>
+        <p id="vacio" class="vacio">Todavía no hay contactos. Registra el primero con el formulario.</p>
+      </section>
+      <section id="detalle" class="panel detalle" hidden aria-labelledby="tituloDetalle">
+        <h2 id="tituloDetalle">Detalle del contacto</h2>
+        <dl>
+          <dt>Nombre</dt>
+          <dd id="detalleNombre"></dd>
+          <dt>Teléfono</dt>
+          <dd id="detalleTelefono"></dd>
+          <dt>Correo</dt>
+          <dd id="detalleCorreo"></dd>
+        </dl>
+        <button type="button" id="cerrarDetalle" class="secundario">Cerrar</button>
+      </section>
     </main>
 
     <script src="script.js"></script>
