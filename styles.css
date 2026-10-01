@@ -1,0 +1,74 @@
+/* ===== Paleta y base ===== */
+:root {
+  --fondo: #e8edf2;
+  --panel: #ffffff;
+  --tinta: #1b2733;
+  --tinta-suave: #5b6876;
+  --borde: #d3dbe3;
+  --acento: #2f5d8a;
+  --acento-oscuro: #234869;
+  --acento-claro: #dbe6f1;
+  --peligro: #a3352b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background-color: var(--fondo);
+  color: var(--tinta);
+  line-height: 1.5;
+}
+
+/* ===== Cabecera ===== */
+.cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 32px 16px 16px;
+}
+
+.cabecera h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.cabecera p {
+  margin: 0;
+  color: var(--tinta-suave);
+}
+
+/* ===== Distribución ===== */
+.contenido {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) 1fr;
+  gap: 16px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+.panel {
+  background-color: var(--panel);
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.panel h2 {
+  margin: 0 0 16px;
+  font-size: 1.15rem;
+}
+
+@media (max-width: 720px) {
+  .contenido {
+    grid-template-columns: 1fr;
+  }
+}
