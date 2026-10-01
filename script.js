@@ -14,6 +14,11 @@ const lista = document.getElementById("listaContactos");
 const vacio = document.getElementById("vacio");
 const contador = document.getElementById("contador");
 const detalle = document.getElementById("detalle");
+const formulario = document.getElementById("formContacto");
+const campoNombre = document.getElementById("nombre");
+const campoTelefono = document.getElementById("telefono");
+const campoCorreo = document.getElementById("correo");
+const mensaje = document.getElementById("mensaje");
 
 // Obtiene las iniciales de un nombre: "Ana Quispe" -> "AQ"
 function obtenerIniciales(nombre) {
@@ -25,6 +30,12 @@ function obtenerIniciales(nombre) {
       return parte[0].toUpperCase();
     })
     .join("");
+}
+
+// Muestra un mensaje de confirmación ("ok") o de validación ("error")
+function mostrarMensaje(texto, tipo) {
+  mensaje.textContent = texto;
+  mensaje.className = "mensaje " + tipo;
 }
 
 // Crea un botón con texto, clase y acción al hacer clic
@@ -103,5 +114,26 @@ function cerrarDetalle() {
 }
 
 document.getElementById("cerrarDetalle").addEventListener("click", cerrarDetalle);
+
+// Registrar un nuevo contacto al enviar el formulario
+formulario.addEventListener("submit", function (evento) {
+  evento.preventDefault(); // evita que la página se recargue
+
+  const nombre = campoNombre.value.trim();
+  const telefono = campoTelefono.value.trim();
+  const correo = campoCorreo.value.trim();
+
+  if (nombre === "" || telefono === "" || correo === "") {
+    mostrarMensaje("Completa nombre, teléfono y correo.", "error");
+    return;
+  }
+
+  contactos.push({ id: Date.now(), nombre: nombre, telefono: telefono, correo: correo });
+  mostrarContactos();
+
+  formulario.reset();
+  campoNombre.focus();
+  mostrarMensaje("Contacto guardado: " + nombre + ".", "ok");
+});
 
 mostrarContactos();

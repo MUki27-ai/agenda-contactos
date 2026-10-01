@@ -194,3 +194,43 @@ button.secundario:hover {
   font-weight: 600;
   overflow-wrap: anywhere;
 }
+
+/* ===== Formulario ===== */
+.formulario {
+  display: flex;
+  flex-direction: column;
+}
+
+.formulario label {
+  margin-bottom: 4px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.formulario input {
+  margin-bottom: 14px;
+  padding: 10px 12px;
+  font: inherit;
+  border: 1px solid #b8c4cf;
+  border-radius: 8px;
+}
+
+.formulario input:focus {
+  outline: 2px solid var(--acento);
+  outline-offset: 1px;
+  border-color: var(--acento);
+}
+
+.mensaje {
+  min-height: 1.5em;
+  margin: 12px 0 0;
+  font-weight: 600;
+}
+
+.mensaje.ok {
+  color: #1f6f4a;
+}
+
+.mensaje.error {
+  color: var(--peligro);
+}

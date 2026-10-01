@@ -13,6 +13,23 @@
     </header>
 
     <main class="contenido">
+      <section class="panel" aria-labelledby="tituloFormulario">
+        <h2 id="tituloFormulario">Nuevo contacto</h2>
+        <form id="formContacto" class="formulario" novalidate>
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" autocomplete="name" placeholder="Ej. Ana Quispe" />
+
+          <label for="telefono">Teléfono</label>
+          <input type="tel" id="telefono" autocomplete="tel" placeholder="Ej. 984 123 456" />
+
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" autocomplete="email" placeholder="Ej. ana@correo.com" />
+
+          <button type="submit">Guardar contacto</button>
+          <p id="mensaje" class="mensaje" aria-live="polite"></p>
+        </form>
+      </section>
+
       <section class="panel panel-lista" aria-labelledby="tituloLista">
         <h2 id="tituloLista">Mis contactos</h2>
         <ul id="listaContactos" class="lista"></ul>
